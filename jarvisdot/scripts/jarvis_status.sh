@@ -2,9 +2,11 @@
 
 PID_FILE="$HOME/.jarvis/jarvis"
 STATUS_FILE="$HOME/.jarvis/jarvis.status"
+SPOKEN_FILE="$HOME/.jarvis/jarvis.spoken"
 
 # Default status
 STATUS="offline"
+TOOLTIP="Jarvis: offline"
 
 # Check if PID file exists and is running
 if [[ -f "$PID_FILE" ]]; then
@@ -15,6 +17,14 @@ if [[ -f "$PID_FILE" ]]; then
       STATUS=$(cat "$STATUS_FILE")
     else
       STATUS="unknown"
+    fi
+
+    # Use spoken text if available for tooltip
+    if [[ -f "$SPOKEN_FILE" ]]; then
+      LAST_SPOKEN=$(<"$SPOKEN_FILE")
+      TOOLTIP="Jarvis: $LAST_SPOKEN"
+    else
+      TOOLTIP="Jarvis: $STATUS"
     fi
   fi
 fi
@@ -40,4 +50,4 @@ case "$STATUS" in
     ;;
 esac
 
-echo "{\"text\": \"$ICON jarvis\", \"tooltip\": \"Jarvis: $STATUS\"}"
+echo "{\"text\": \"$ICON jarvis\", \"tooltip\": \"$TOOLTIP\"}"
