@@ -47,4 +47,4 @@ ESCAPED_HEARD=$(echo "$LAST_HEARD" | sed ':a;N;$!ba;s/\n/\\n/g' | sed 's/"/\\"/g
 ESCAPED_SPOKEN=$(echo "$LAST_SPOKEN" | sed ':a;N;$!ba;s/\n/\\n/g' | sed 's/"/\\"/g')
 
 # Output JSON for Waybar
-echo "{\"text\": \"$ICON jarvis\", \"tooltip\": \" $CURRENT_USER:\n$ESCAPED_HEARD\\n\n jarvis:\n$ESCAPED_SPOKEN\"}"
+echo "{\"text\": \"$ICON jarvis\", \"tooltip\": \" $CURRENT_USER:\n$ESCAPED_HEARD\\n\n󱌈 jarvis:\n$ESCAPED_SPOKEN\"}"
