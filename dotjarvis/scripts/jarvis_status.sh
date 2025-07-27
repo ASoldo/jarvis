@@ -3,51 +3,45 @@
 PID_FILE="$HOME/.jarvis/jarvis"
 STATUS_FILE="$HOME/.jarvis/jarvis.status"
 SPOKEN_FILE="$HOME/.jarvis/jarvis.spoken"
-
+HEARD_FILE="$HOME/.jarvis/jarvis.heard"
+# Get current user
+CURRENT_USER=$(whoami)
 # Default status
 STATUS="offline"
-TOOLTIP="Jarvis: offline"
+HEARD_TOOLTIP="User: n/a"
+SPOKEN_TOOLTIP="Jarvis: n/a"
 
 # Check if PID file exists and is running
 if [[ -f "$PID_FILE" ]]; then
-  PID=$(cat "$PID_FILE")
+  PID=$(<"$PID_FILE")
   if ps -p "$PID" > /dev/null 2>&1; then
-    # If running, check status file
-    if [[ -f "$STATUS_FILE" ]]; then
-      STATUS=$(cat "$STATUS_FILE")
+    [[ -f "$STATUS_FILE" ]] && STATUS=$(<"$STATUS_FILE") || STATUS="unknown"
+
+    if [[ -f "$HEARD_FILE" ]]; then
+      LAST_HEARD=$(<"$HEARD_FILE")
+      HEARD_TOOLTIP=" $CURRENT_USER: \n   $LAST_HEARD\n - - -"
     else
-      STATUS="unknown"
+      HEARD_TOOLTIP=" $CURRENT_USER: \n   $STATUS\n - - -"
     fi
 
-    # Use spoken text if available for tooltip
     if [[ -f "$SPOKEN_FILE" ]]; then
       LAST_SPOKEN=$(<"$SPOKEN_FILE")
-      TOOLTIP="Jarvis: $LAST_SPOKEN"
+      SPOKEN_TOOLTIP=" jarvis: \n   $LAST_SPOKEN\n - - -"
     else
-      TOOLTIP="Jarvis: $STATUS"
+      SPOKEN_TOOLTIP=" jarvis: \n   $STATUS\n - - -"
     fi
   fi
 fi
 
+# Icon selection
 case "$STATUS" in
-  speaking)
-    ICON="󱌈"
-    ;;
-  listening)
-    ICON=""
-    ;;
-  idle)
-    ICON=""
-    ;;
-  canceled)
-    ICON="󰜺"
-    ;;
-  offline|unknown)
-    ICON=""
-    ;;
-  *)
-    ICON=""
-    ;;
+  speaking) ICON="󱌈" ;;
+  listening) ICON="" ;;
+  idle) ICON="" ;;
+  canceled) ICON="󰜺" ;;
+  offline|unknown) ICON="" ;;
+  *) ICON="" ;;
 esac
 
-echo "{\"text\": \"$ICON jarvis\", \"tooltip\": \"$TOOLTIP\"}"
+# Output JSON for Waybar
+echo "{\"text\": \"$ICON jarvis\", \"tooltip\": \"$HEARD_TOOLTIP\\n\n$SPOKEN_TOOLTIP\"}"

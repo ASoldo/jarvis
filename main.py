@@ -32,6 +32,11 @@ JARVIS_DIR.mkdir(exist_ok=True)
 PID_FILE = JARVIS_DIR / "jarvis"
 STATUS_FILE = JARVIS_DIR / "jarvis.status"
 SPOKEN_FILE = JARVIS_DIR / "jarvis.spoken"
+HEARD_FILE = JARVIS_DIR / "jarvis.heard"
+
+def write_heard_text(text: str):
+    with open(HEARD_FILE, 'w') as f:
+        f.write(text)
 
 
 def store_jarvis_pid():
@@ -177,6 +182,7 @@ def write():
                             logging.info("🕵️ Listening for wake word...")
                             audio = recognizer.listen(source, timeout=10)
                             transcript = recognizer.recognize_google(audio)
+                            write_heard_text(transcript)
                             logging.info(f"🗣 Heard: {transcript}")
 
                             if TRIGGER_WORD.lower() in transcript.lower():
@@ -190,6 +196,7 @@ def write():
                             logging.info("🎤 Listening for command...")
                             audio = recognizer.listen(source, timeout=10)
                             command = recognizer.recognize_google(audio)
+                            write_heard_text(command)
                             logging.info(f"📥 Command: {command}")
 
                             response = executor.invoke({"input": command})
