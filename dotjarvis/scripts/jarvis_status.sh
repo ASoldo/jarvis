@@ -19,16 +19,16 @@ if [[ -f "$PID_FILE" ]]; then
 
     if [[ -f "$HEARD_FILE" ]]; then
       LAST_HEARD=$(<"$HEARD_FILE")
-      HEARD_TOOLTIP=" $CURRENT_USER: \n   $LAST_HEARD\n - - -"
+      HEARD_TOOLTIP="$LAST_HEARD"
     else
-      HEARD_TOOLTIP=" $CURRENT_USER: \n   $STATUS\n - - -"
+      HEARD_TOOLTIP="$STATUS"
     fi
 
     if [[ -f "$SPOKEN_FILE" ]]; then
       LAST_SPOKEN=$(<"$SPOKEN_FILE")
-      SPOKEN_TOOLTIP=" jarvis: \n   $LAST_SPOKEN\n - - -"
+      SPOKEN_TOOLTIP="$LAST_SPOKEN"
     else
-      SPOKEN_TOOLTIP=" jarvis: \n   $STATUS\n - - -"
+      SPOKEN_TOOLTIP="$STATUS"
     fi
   fi
 fi
@@ -43,5 +43,8 @@ case "$STATUS" in
   *) ICON="" ;;
 esac
 
+ESCAPED_HEARD=$(echo "$LAST_HEARD" | sed ':a;N;$!ba;s/\n/\\n/g' | sed 's/"/\\"/g')
+ESCAPED_SPOKEN=$(echo "$LAST_SPOKEN" | sed ':a;N;$!ba;s/\n/\\n/g' | sed 's/"/\\"/g')
+
 # Output JSON for Waybar
-echo "{\"text\": \"$ICON jarvis\", \"tooltip\": \"$HEARD_TOOLTIP\\n\n$SPOKEN_TOOLTIP\"}"
+echo "{\"text\": \"$ICON jarvis\", \"tooltip\": \" $CURRENT_USER:\n$ESCAPED_HEARD\\n\n jarvis:\n$ESCAPED_SPOKEN\"}"
