@@ -1,3 +1,5 @@
+<img width="249" height="26" alt="image" src="https://github.com/user-attachments/assets/2f252363-7c44-40e3-8870-c5adeb606e5e" />
+
 # 🧠 Jarvis – Local Voice-Controlled AI Assistant
 
 **Jarvis** is a voice-activated, conversational AI assistant powered by a local LLM (Qwen via Ollama). It listens for a wake word, processes spoken commands using a local language model with LangChain, and responds out loud via TTS. It supports tool-calling for dynamic functions like checking the current time.
