@@ -47,6 +47,7 @@
 ~/.jarvis/
 ├── jarvis              # PID of running process
 ├── jarvis.status       # Status indicator (idle, listening, speaking, canceled)
+├── jarvis.spoken       # Status indicator for tooltip (last spoken text)
 └── scripts/
     ├── jarvis_status.sh
     └── cancel_tts.sh
