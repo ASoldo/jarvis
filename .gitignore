@@ -6,3 +6,4 @@ __pycache__/
 *.swp
 .env
 .jarvis/
+tools/__pycache__/
