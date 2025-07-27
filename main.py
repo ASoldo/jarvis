@@ -31,6 +31,7 @@ JARVIS_DIR = Path.home() / ".jarvis"
 JARVIS_DIR.mkdir(exist_ok=True)
 PID_FILE = JARVIS_DIR / "jarvis"
 STATUS_FILE = JARVIS_DIR / "jarvis.status"
+SPOKEN_FILE = JARVIS_DIR / "jarvis.spoken"
 
 
 def store_jarvis_pid():
@@ -42,6 +43,11 @@ def store_jarvis_pid():
 def write_status(status: str):
     with open(STATUS_FILE, 'w') as f:
         f.write(status)
+
+
+def write_spoken_text(text: str):
+    with open(SPOKEN_FILE, 'w') as f:
+        f.write(text)
 
 
 def cancel_tts():
@@ -87,6 +93,7 @@ recognizer = sr.Recognizer()
 def speak_text(text: str):
     global tts_process
     write_status("speaking")
+    write_spoken_text(text)
 
     # Kill previous TTS process if running
     if tts_process and tts_process.poll() is None:
