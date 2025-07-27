@@ -171,6 +171,53 @@ ls /usr/lib/systemd/user/waybar.service
 
 ---
 
+## Convert to `--user` systemd service (as expected for audio apps)
+
+### 1. Move the service file to user systemd directory
+
+Create the file:
+
+```bash
+mkdir -p ~/.config/systemd/user
+nano ~/.config/systemd/user/jarvis.service
+```
+
+Paste this user-level service:
+
+```ini
+[Unit]
+Description=Jarvis Voice Assistant
+After=sound.target default.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/rootster/Documents/jarvis
+ExecStart=/home/rootster/Documents/jarvis/start-jarvis.sh
+Restart=always
+Environment=RHVOICE_BIN=/snap/bin/rhvoice.test
+Environment=PULSE_SERVER=unix:/run/user/1000/pulse/native
+
+[Install]
+WantedBy=default.target
+```
+
+> Replace `start-jarvis.sh` with `python main.py` directly if you're not using a wrapper script.
+
+### 2. Enable and start the user service
+
+```bash
+systemctl --user daemon-reload
+systemctl --user enable jarvis.service
+systemctl --user start jarvis.service
+```
+
+### 3. Verify it's running properly
+
+```bash
+journalctl --user -u jarvis.service -f
+```
+
+
 ## ✅ Final Notes
 
 * Icons use Nerd Font glyphs, ensure your terminal/Waybar uses `CaskaydiaMono Nerd Font` or similar
