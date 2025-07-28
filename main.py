@@ -203,6 +203,13 @@ def write():
                             write_heard_text(command)
                             logging.info(f"📥 Command: {command}")
 
+                            if "shadow" in command.lower():
+                                logging.info("👤 'Jarvis shadow' detected. Returning to wake mode.")
+                                speak_text("Going silent.")
+                                conversation_mode = False
+                                write_status("idle")
+                                continue
+
                             response = executor.invoke({"input": command})
                             content = response.get("output", "")
                             logging.info(f"✎  Response: {content}")
