@@ -34,6 +34,9 @@ STATUS_FILE = JARVIS_DIR / "jarvis.status"
 SPOKEN_FILE = JARVIS_DIR / "jarvis.spoken"
 HEARD_FILE = JARVIS_DIR / "jarvis.heard"
 
+os.chdir(Path.home())
+
+
 def write_heard_text(text: str):
     with open(HEARD_FILE, 'w') as f:
         f.write(text)
