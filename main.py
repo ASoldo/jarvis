@@ -9,7 +9,7 @@ import subprocess
 from langchain_ollama import ChatOllama
 from langchain.agents import AgentExecutor, create_tool_calling_agent
 from langchain_core.prompts import ChatPromptTemplate
-from tools.time import get_time
+# from tools.time import get_time
 from tools.codex_tool import codex_cli_task
 from tools.shell_task import shell_task
 
@@ -137,7 +137,8 @@ def speak_text(text: str):
 
 # Initialize LLM + tools
 llm = ChatOllama(model="qwen3:1.7b", reasoning=False)
-tools = [get_time, codex_cli_task, shell_task]
+
+tools = [codex_cli_task, shell_task]
 prompt = ChatPromptTemplate.from_messages([
     ("system", "You are Jarvis, a helpful AI assistant.\n"
      "Use `shell_task` for raw Linux commands (ls, cat, pwd).\n"

@@ -22,7 +22,7 @@
 1. **Startup & local LLM Setup**
 
    * Initializes a local Ollama model (`qwen3:1.7b`) via `ChatOllama`
-   * Registers tools (`get_time`) using LangChain
+   * Registers tools (`codex_tool, shell_task`) using LangChain
 
 2. **Wake Word Listening**
 
